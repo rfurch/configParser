@@ -1,0 +1,1087 @@
+term len 0 
+NP_CAST_7201#show running 
+Building configuration...
+
+Current configuration : 30080 bytes
+!
+! Last configuration change at 09:41:48 ADC Fri Jan 23 2015
+! NVRAM config last updated at 16:59:32 ADC Wed Jan 21 2015 by ebraile
+!
+upgrade fpd auto
+version 12.4
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+no service password-encryption
+!
+hostname NP_CAST_7201
+!
+boot-start-marker
+boot-end-marker
+!
+logging message-counter syslog
+enable secret 5 $1$..Q5$rVD8qS8iHRTV1PiwiO2xJ.
+!
+aaa new-model
+!
+!
+aaa group server tacacs+ tacacs+ADC
+ server 192.168.208.13
+ server 192.168.206.86
+!
+aaa authentication login default group tacacs+ local
+aaa authentication enable default enable
+aaa authorization exec default group tacacs+ local 
+aaa authorization commands 0 default group tacacs+ local 
+aaa authorization commands 1 default group tacacs+ local 
+aaa authorization commands 15 default group tacacs+ local 
+aaa accounting send stop-record authentication failure 
+aaa accounting exec default
+ action-type start-stop
+ group tacacs+
+!
+aaa accounting commands 0 default
+ action-type start-stop
+ group tacacs+
+!
+aaa accounting commands 1 default
+ action-type start-stop
+ group tacacs+
+!
+aaa accounting commands 15 default
+ action-type start-stop
+ group tacacs+
+!
+aaa accounting network default
+ action-type start-stop
+ group tacacs+
+!
+aaa accounting connection default
+ action-type start-stop
+ group tacacs+
+!
+aaa accounting system default
+ action-type start-stop
+ group tacacs+
+!
+!
+!
+aaa session-id common
+clock timezone ADC -3
+ip source-route
+ip cef
+!
+!
+ip vrf ADC_APE
+ description APE_NORTE
+ rd 52308:102
+ route-target export 52308:102
+ route-target import 52308:102
+!
+ip vrf ADC_TELIP
+ rd 52308:320
+ route-target export 52308:320
+ route-target import 52308:320
+!
+ip vrf CSD_GLOBAL
+ rd 52308:502
+ route-target export 52308:502
+ route-target import 52308:502
+!
+ip vrf CSD_PUB
+ description VRF_INTERNET_ABIERTO
+ rd 52308:65
+ route-target export 52308:65
+ route-target import 52308:65
+!
+ip vrf INET
+ rd 52308:17
+ route-target export 52308:17
+ route-target import 52308:17
+!
+ip vrf INET_CLARO
+ rd 52308:30
+ route-target export 52308:30
+ route-target import 52308:30
+!
+ip vrf INET_GLO
+ rd 52308:18
+ route-target export 52308:18
+ route-target import 52308:18
+!
+ip vrf INET_SILN
+ rd 52308:21
+ route-target export 52308:21
+ route-target import 52308:21
+!
+ip vrf INET_TASA
+ rd 52308:26
+ route-target export 52308:26
+ route-target import 52308:26
+!
+!
+!
+no ip domain lookup
+ip domain name adc.backbone
+no ipv6 cef
+!
+multilink bundle-name authenticated
+no mpls ip propagate-ttl forwarded
+mpls label protocol ldp
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+username adc secret 5 $1$Lrh9$TMxopcppXdbjzwkS4jwVw/
+archive
+ log config
+  hidekeys
+! 
+!
+!
+!
+!
+ip ssh version 1
+!
+track 100 ip sla 100 reachability
+!
+track 101 ip sla 101 reachability
+!
+track 102 ip sla 102 reachability
+!
+track 103 ip sla 103 reachability
+!
+track 104 ip sla 104 reachability
+!
+track 105 ip sla 105 reachability
+!
+track 106 ip sla 106 reachability
+!
+track 107 ip sla 107 reachability
+!
+track 108 ip sla 108 reachability
+!
+track 109 ip sla 109 reachability
+!
+track 110 ip sla 110 reachability
+!
+track 111 ip sla 111 reachability
+!
+track 112 ip sla 112 reachability
+!
+track 113 ip sla 113 reachability
+!
+track 114 ip sla 114 reachability
+!
+track 115 ip sla 115 reachability
+!
+track 116 ip sla 116 reachability
+!
+track 117 ip sla 117 reachability
+!
+track 118 ip sla 118 reachability
+!
+track 119 ip sla 119 reachability
+!
+track 120 ip sla 120 reachability
+!
+track 121 ip sla 121 reachability
+!
+track 122 ip sla 122 reachability
+!
+track 123 ip sla 123 reachability
+!
+track 124 ip sla 124 reachability
+!
+track 400 list boolean or
+ object 100
+ object 101
+ object 102
+ object 103
+ object 104
+ delay down 15 up 15
+!
+track 401 list boolean or
+ object 105
+ object 106
+ object 107
+ object 108
+ object 109
+ delay down 15 up 15
+!
+track 403 list boolean or
+ object 110
+ object 111
+ object 112
+ object 113
+ object 114
+ delay down 15 up 15
+!
+track 404 list boolean or
+ object 115
+ object 116
+ object 117
+ object 118
+ object 119
+ delay down 15 up 15
+!
+track 405 list boolean or
+ object 120
+ object 121
+ object 122
+ object 123
+ object 124
+ delay down 15 up 15
+!
+class-map match-any INET_COOPWINIFREDA
+ match access-group name INET_COOPWINIFREDA
+class-map match-any INET_RIDSACASTEX
+ match access-group name INET_RIDSACASTEX
+class-map match-any INET_COOPCASTEX
+ match access-group name INET_COOPCASTEX
+class-map match-any INET_RIDSAWINIFREDA
+ match access-group name INET_RIDSAWINIFREDA
+class-map type port-filter match-any PRUEBA-PUERTOS
+!
+!
+policy-map INTERNET
+ class INET_RIDSACASTEX
+   police rate 195000000  burst 16875000 
+     conform-action transmit 
+     exceed-action drop 
+     violate-action drop 
+ class INET_COOPCASTEX
+   police rate 64000000  burst 1000000 
+     conform-action transmit 
+     exceed-action drop 
+     violate-action drop 
+ class INET_RIDSAWINIFREDA
+   police rate 21000000  burst 1000000 
+     conform-action transmit 
+     exceed-action drop 
+     violate-action drop 
+ class INET_COOPWINIFREDA
+   police rate 11000000  burst 500000 
+     conform-action transmit 
+     exceed-action drop 
+     violate-action drop 
+ class class-default
+   police rate 10000000  burst 500000 
+     conform-action transmit 
+     exceed-action drop 
+     violate-action drop 
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 192.168.205.55 255.255.255.255
+!
+interface Loopback1
+ description TES_SILN
+ ip vrf forwarding INET_SILN
+ ip address 190.105.183.85 255.255.255.252
+!
+interface Loopback2
+ description INET_SILICA_SUR
+ ip vrf forwarding INET
+ ip address 190.105.176.117 255.255.255.252
+!
+interface Loopback3
+ description TEST_LEVEL3
+ ip vrf forwarding INET_GLO
+ ip address 190.105.178.98 255.255.255.252
+ shutdown
+!
+interface Loopback4
+ description TEST_TELEFONICA
+ ip vrf forwarding INET_TASA
+ ip address 181.114.223.13 255.255.255.252
+!
+interface Loopback5
+ description TEST_CLARO
+ ip vrf forwarding INET_CLARO
+ ip address 181.114.221.41 255.255.255.252
+!
+interface FastEthernet0/0
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/0
+ description TRUNK_3560_Y_CALEUFU
+ mtu 9000
+ no ip address
+ ip ospf message-digest-key 100 md5 Agu4s0spf
+ load-interval 30
+ duplex auto
+ speed auto
+ media-type rj45
+ negotiation auto
+ mpls ip
+!
+interface GigabitEthernet0/0.194
+ description ADMIN_RADIO
+ encapsulation dot1Q 194
+ ip address 172.16.61.1 255.255.255.192
+!
+interface GigabitEthernet0/0.198
+ description Vlan_SRV
+ encapsulation dot1Q 198
+ ip address 192.168.207.177 255.255.255.240
+!
+interface GigabitEthernet0/0.199
+ description Vlan_Admin_3560
+ encapsulation dot1Q 199
+ ip address 192.168.203.53 255.255.255.252
+ ip ospf message-digest-key 100 md5 Agu4s0spf
+!
+interface GigabitEthernet0/0.235
+ description TEST_CLARO
+ encapsulation dot1Q 235
+ ip vrf forwarding INET_CLARO
+ ip address 181.114.221.65 255.255.255.252
+!
+interface GigabitEthernet0/0.306
+ encapsulation dot1Q 306
+ ip vrf forwarding INET
+ ip address 190.105.176.165 255.255.255.252
+!
+interface GigabitEthernet0/0.308
+ description INET_COOPCASTEX
+ encapsulation dot1Q 308
+ ip vrf forwarding INET
+ ip address 192.168.217.193 255.255.255.252 secondary
+ ip address 192.168.215.81 255.255.255.248
+ service-policy input INTERNET
+ service-policy output INTERNET
+!
+interface GigabitEthernet0/0.309
+ description TEST_RTT
+ encapsulation dot1Q 309
+ ip vrf forwarding INET_GLO
+ ip address 190.105.178.105 255.255.255.248
+!
+interface GigabitEthernet0/0.311
+ description ACCESO_DATOS
+ encapsulation dot1Q 311
+ ip vrf forwarding INET_GLO
+ ip address 190.105.178.113 255.255.255.252
+!
+interface GigabitEthernet0/0.312
+ description TEST_TELEFONICA
+ encapsulation dot1Q 312
+ ip vrf forwarding INET_SILN
+ ip address 190.105.183.89 255.255.255.252
+!
+interface GigabitEthernet0/0.313
+ encapsulation dot1Q 313
+ ip vrf forwarding INET_TASA
+ ip address 181.114.223.57 255.255.255.252
+!
+interface GigabitEthernet0/0.314
+ description TEST_TELEFONICA_MTR
+ encapsulation dot1Q 314
+ ip vrf forwarding INET_TASA
+ ip address 181.114.223.77 255.255.255.252
+!
+interface GigabitEthernet0/0.315
+ description PC_Prueba
+ encapsulation dot1Q 315
+ ip address 192.168.203.249 255.255.255.248
+!
+interface GigabitEthernet0/0.322
+ description APE
+ encapsulation dot1Q 322
+ ip vrf forwarding ADC_APE
+ ip address 10.201.20.1 255.255.255.0
+!
+interface GigabitEthernet0/0.325
+ description RIDSA_CASTEX
+ encapsulation dot1Q 325
+ ip vrf forwarding INET
+ ip address 190.105.178.89 255.255.255.252
+ service-policy input INTERNET
+ service-policy output INTERNET
+!
+interface GigabitEthernet0/0.326
+ description APE
+ encapsulation dot1Q 326
+ ip vrf forwarding ADC_APE
+ ip address 10.201.32.1 255.255.255.0
+!
+interface GigabitEthernet0/0.328
+ description RADIO_CERAGON_WINIFREDA
+ encapsulation dot1Q 328
+ ip address 192.168.203.225 255.255.255.240
+ service-policy input INTERNET
+ service-policy output INTERNET
+!
+interface GigabitEthernet0/0.329
+ description INET_WINIFREDA
+ encapsulation dot1Q 329
+ ip vrf forwarding INET_TASA
+ ip address 192.168.217.137 255.255.255.252
+ ip flow ingress
+ ip flow egress
+ service-policy input INTERNET
+ service-policy output INTERNET
+!
+interface GigabitEthernet0/0.330
+ description INET_COOP_WINIFREDA
+ encapsulation dot1Q 330
+ ip vrf forwarding INET_GLO
+ ip address 192.168.217.145 255.255.255.248
+ service-policy input INTERNET
+ service-policy output INTERNET
+!
+interface GigabitEthernet0/0.331
+ description CSD_GLOBAL_HOSP
+ encapsulation dot1Q 331
+ ip vrf forwarding CSD_GLOBAL
+ ip address 10.214.1.1 255.255.255.0
+ ip helper-address 10.2.1.73
+!
+interface GigabitEthernet0/0.332
+ description INTERNET_CSD_PUB
+ encapsulation dot1Q 332
+ ip vrf forwarding CSD_PUB
+ ip address 192.168.207.1 255.255.255.0
+ ip helper-address 192.168.217.27
+!
+interface GigabitEthernet0/0.333
+ description CSD_GLO_REG_CIVIL
+ encapsulation dot1Q 333
+ ip vrf forwarding CSD_GLOBAL
+ ip address 10.214.7.1 255.255.255.0
+ ip helper-address 10.2.1.73
+!
+interface GigabitEthernet0/0.2306
+!
+interface GigabitEthernet0/0.2307
+ description A_NS_CONH_2921
+ encapsulation dot1Q 2307
+ ip address 192.168.224.1 255.255.255.252
+ ip ospf message-digest-key 100 md5 Agu4s0spf
+ mpls ip
+!
+interface GigabitEthernet0/0.2309
+ description TELEN
+ encapsulation dot1Q 2309
+ ip address 192.168.201.165 255.255.255.252
+ ip ospf message-digest-key 100 md5 Agu4s0spf
+ ip ospf cost 8
+ mpls ip
+!
+interface GigabitEthernet0/1
+ description CALEUFU
+ mtu 9000
+ no ip address
+ duplex auto
+ speed 1000
+ media-type sfp
+ no negotiation auto
+!
+interface GigabitEthernet0/1.2306
+ description A_CALEUFU
+ encapsulation dot1Q 2306
+ ip address 192.168.201.29 255.255.255.252
+ ip ospf message-digest-key 100 md5 Agu4s0spf
+ ip ospf cost 20
+ mpls ip
+!
+interface GigabitEthernet0/2
+ description LUIGGI
+ mtu 9000
+ ip address 192.168.201.33 255.255.255.252
+ ip ospf message-digest-key 100 md5 Agu4s0spf
+ duplex auto
+ speed auto
+ negotiation auto
+ mpls ip
+!
+interface GigabitEthernet0/3
+ description A_NS_RUCA_3600
+ mtu 9000
+ no ip address
+ ip ospf message-digest-key 100 md5 Agu4s0spf
+ duplex auto
+ speed auto
+ negotiation auto
+ mpls ip
+!
+interface GigabitEthernet0/3.52
+ description ADC_TELIP
+ encapsulation dot1Q 52
+ ip vrf forwarding ADC_TELIP
+ ip address 172.16.58.1 255.255.255.128
+ ip helper-address global 10.128.4.2
+ ip helper-address 10.128.4.2
+!
+interface GigabitEthernet0/3.198
+ description SERVICIOS_ups
+ encapsulation dot1Q 198
+ ip address 192.168.226.33 255.255.255.240
+!
+interface GigabitEthernet0/3.199
+ description ADMIN_RUCA
+ encapsulation dot1Q 199
+ ip address 192.168.223.33 255.255.255.240
+!
+interface GigabitEthernet0/3.324
+ description CSD_GLOBAL_RCIVIL
+ encapsulation dot1Q 324
+ ip vrf forwarding CSD_GLOBAL
+ ip address 10.214.27.1 255.255.255.0
+ ip helper-address 10.2.1.73
+!
+interface GigabitEthernet0/3.325
+ description CSD_GLOBAL_MUNI
+ encapsulation dot1Q 325
+ ip vrf forwarding CSD_GLOBAL
+ ip address 10.214.25.1 255.255.255.0
+ ip helper-address 10.2.1.73
+!
+interface GigabitEthernet0/3.326
+ description CSD_GLOBAL_POLICIA
+ encapsulation dot1Q 326
+ ip vrf forwarding CSD_GLOBAL
+ ip address 10.214.23.1 255.255.255.0
+ ip helper-address 10.2.1.73
+!
+interface GigabitEthernet0/3.327
+ description CSD_GLOBAL_RUCA_POSTA
+ encapsulation dot1Q 327
+ ip vrf forwarding CSD_GLOBAL
+ ip address 10.214.21.1 255.255.255.0
+ ip helper-address 10.2.1.73
+!
+interface GigabitEthernet0/3.328
+ description CSD_PUB_RUCANELO
+ encapsulation dot1Q 328
+ ip vrf forwarding CSD_PUB
+ ip address 192.168.234.1 255.255.255.192
+ ip helper-address 192.168.217.27
+!
+interface GigabitEthernet0/3.999
+ description LINK_3600_RUCA_VICTORICA
+ encapsulation dot1Q 999
+ ip address 192.168.224.5 255.255.255.252
+ ip ospf message-digest-key 100 md5 Agu4s0spf
+ mpls ip
+!
+router ospf 100
+ router-id 192.168.205.55
+ log-adjacency-changes
+ auto-cost reference-bandwidth 10000
+ area 0 authentication message-digest
+ redistribute static subnets
+ network 172.16.61.0 0.0.0.63 area 0
+ network 192.168.201.28 0.0.0.3 area 0
+ network 192.168.201.32 0.0.0.3 area 0
+ network 192.168.201.36 0.0.0.3 area 0
+ network 192.168.201.164 0.0.0.3 area 0
+ network 192.168.203.52 0.0.0.3 area 0
+ network 192.168.203.224 0.0.0.15 area 0
+ network 192.168.203.248 0.0.0.7 area 0
+ network 192.168.205.55 0.0.0.0 area 0
+ network 192.168.207.176 0.0.0.15 area 0
+ network 192.168.223.32 0.0.0.15 area 0
+ network 192.168.224.0 0.0.0.3 area 0
+ network 192.168.224.4 0.0.0.3 area 0
+!
+router bgp 52308
+ bgp log-neighbor-changes
+ neighbor 192.168.205.10 remote-as 52308
+ neighbor 192.168.205.10 description SROSA
+ neighbor 192.168.205.10 update-source Loopback0
+ neighbor 192.168.205.28 remote-as 52308
+ neighbor 192.168.205.28 description REALICO
+ neighbor 192.168.205.28 update-source Loopback0
+ !
+ address-family ipv4
+  neighbor 192.168.205.10 activate
+  neighbor 192.168.205.10 send-community both
+  neighbor 192.168.205.10 next-hop-self
+  neighbor 192.168.205.28 activate
+  neighbor 192.168.205.28 send-community both
+  neighbor 192.168.205.28 next-hop-self
+  no auto-summary
+  no synchronization
+ exit-address-family
+ !
+ address-family vpnv4
+  neighbor 192.168.205.10 activate
+  neighbor 192.168.205.10 send-community both
+  neighbor 192.168.205.10 next-hop-self
+  neighbor 192.168.205.28 activate
+  neighbor 192.168.205.28 send-community both
+  neighbor 192.168.205.28 next-hop-self
+ exit-address-family
+ !
+ address-family ipv4 vrf INET_TASA
+  redistribute connected
+  redistribute static
+  neighbor 192.168.217.138 remote-as 27983
+  neighbor 192.168.217.138 description RIDSA_WINIFREDA
+  neighbor 192.168.217.138 activate
+  neighbor 192.168.217.138 next-hop-self
+  neighbor 192.168.217.138 route-map PERMIT_DEFAULT out
+  neighbor 192.168.217.194 remote-as 52474
+  neighbor 192.168.217.194 description COOPERATIVA_CASTEX
+  neighbor 192.168.217.194 activate
+  neighbor 192.168.217.194 next-hop-self
+  neighbor 192.168.217.194 route-map PERMIT_DEFAULT out
+  no synchronization
+ exit-address-family
+ !
+ address-family ipv4 vrf INET_SILN
+  redistribute connected
+  redistribute static
+  neighbor 192.168.217.138 remote-as 27983
+  neighbor 192.168.217.138 description RIDSA_CASTEX
+  neighbor 192.168.217.138 activate
+  neighbor 192.168.217.138 next-hop-self
+  neighbor 192.168.217.138 route-map PERMIT_DEFAULT out
+  neighbor 192.168.217.194 remote-as 52474
+  neighbor 192.168.217.194 description COOPERATIVA_CASTEX
+  neighbor 192.168.217.194 activate
+  neighbor 192.168.217.194 next-hop-self
+  neighbor 192.168.217.194 route-map PERMIT_DEFAULT out
+  no synchronization
+ exit-address-family
+ !
+ address-family ipv4 vrf INET_GLO
+  redistribute connected
+  redistribute static
+  neighbor 190.105.178.90 remote-as 27983
+  neighbor 190.105.178.90 description RIDSA_CASTEX
+  neighbor 190.105.178.90 activate
+  neighbor 190.105.178.90 next-hop-self
+  neighbor 190.105.178.90 route-map PERMIT_DEFAULT out
+  neighbor 192.168.217.138 remote-as 27983
+  neighbor 192.168.217.138 description RIDSA_CASTEX
+  neighbor 192.168.217.138 activate
+  neighbor 192.168.217.138 next-hop-self
+  neighbor 192.168.217.138 route-map PERMIT_DEFAULT out
+  neighbor 192.168.217.194 remote-as 52474
+  neighbor 192.168.217.194 description COOPERATIVA_CASTEX
+  neighbor 192.168.217.194 activate
+  neighbor 192.168.217.194 next-hop-self
+  neighbor 192.168.217.194 route-map PERMIT_DEFAULT out
+  no synchronization
+  network 190.105.178.88 mask 255.255.255.252
+  network 190.108.36.0 mask 255.255.254.0
+ exit-address-family
+ !
+ address-family ipv4 vrf INET_CLARO
+  redistribute connected
+  redistribute static
+  neighbor 192.168.217.194 remote-as 52474
+  neighbor 192.168.217.194 description COOPERATIVA_CASTEX
+  neighbor 192.168.217.194 activate
+  neighbor 192.168.217.194 next-hop-self
+  neighbor 192.168.217.194 route-map PERMIT_DEFAULT out
+  no synchronization
+ exit-address-family
+ !
+ address-family ipv4 vrf INET
+  redistribute connected
+  redistribute static
+  neighbor 190.105.178.90 remote-as 27983
+  neighbor 190.105.178.90 description RIDSA_CASTEX
+  neighbor 190.105.178.90 activate
+  neighbor 190.105.178.90 next-hop-self
+  neighbor 190.105.178.90 route-map PERMIT_DEFAULT out
+  neighbor 192.168.217.138 remote-as 27983
+  neighbor 192.168.217.138 description RIDSA_CASTEX
+  neighbor 192.168.217.138 activate
+  neighbor 192.168.217.138 next-hop-self
+  neighbor 192.168.217.138 route-map PERMIT_DEFAULT out
+  neighbor 192.168.217.194 remote-as 52474
+  neighbor 192.168.217.194 description COOPERATIVA_CASTEX
+  neighbor 192.168.217.194 activate
+  neighbor 192.168.217.194 next-hop-self
+  neighbor 192.168.217.194 route-map PERMIT_DEFAULT out
+  no synchronization
+ exit-address-family
+ !
+ address-family ipv4 vrf CSD_PUB
+  redistribute connected
+  redistribute static
+  no synchronization
+ exit-address-family
+ !
+ address-family ipv4 vrf CSD_GLOBAL
+  redistribute connected
+  redistribute static
+  no synchronization
+ exit-address-family
+ !
+ address-family ipv4 vrf ADC_TELIP
+  redistribute connected
+  redistribute static
+  no synchronization
+ exit-address-family
+ !
+ address-family ipv4 vrf ADC_APE
+  redistribute connected
+  redistribute static
+  default-information originate
+  no synchronization
+  network 10.201.20.0 mask 255.255.255.0
+ exit-address-family
+!
+ip forward-protocol nd
+ip route vrf INET 190.108.36.0 255.255.254.0 GigabitEthernet0/0.308 192.168.215.82
+ip route vrf INET_GLO 190.105.190.0 255.255.255.0 GigabitEthernet0/0.330 192.168.217.148
+no ip http server
+no ip http secure-server
+!
+!
+!
+ip access-list extended INET_COOPCASTEX
+ permit ip 190.108.36.0 0.0.1.255 any
+ permit ip any 190.108.36.0 0.0.1.255
+ permit ip 179.49.72.0 0.0.7.255 any
+ permit ip any 179.49.72.0 0.0.7.255
+ deny   ip any any
+ip access-list extended INET_COOPWINIFREDA
+ permit ip 181.114.212.0 0.0.1.255 any
+ permit ip any 181.114.212.0 0.0.1.255
+ permit ip 190.105.190.0 0.0.0.255 any
+ permit ip any 190.105.190.0 0.0.0.255
+ deny   ip any any
+ip access-list extended INET_RIDSACASTEX
+ permit ip 179.62.32.0 0.0.7.255 any
+ permit ip any 179.62.32.0 0.0.7.255
+ permit ip 190.185.179.0 0.0.0.255 any
+ permit ip any 190.185.179.0 0.0.0.255
+ deny   ip any any
+ip access-list extended INET_RIDSAWINIFREDA
+ permit ip 190.185.187.0 0.0.0.255 any
+ permit ip any 190.185.187.0 0.0.0.255
+ permit ip 190.185.207.0 0.0.0.255 any
+ permit ip any 190.185.207.0 0.0.0.255
+ deny   ip any any
+!
+ip sla 100
+ icmp-echo 62.37.237.140 source-ip 190.105.183.85
+ vrf INET_SILN
+ frequency 30
+ip sla 101
+ icmp-echo 212.145.4.97 source-ip 190.105.183.85
+ vrf INET_SILN
+ frequency 30
+ip sla 102
+ icmp-echo 212.4.96.21 source-ip 190.105.183.85
+ vrf INET_SILN
+ frequency 30
+ip sla 103
+ icmp-echo 4.2.2.4 source-ip 190.105.183.85
+ vrf INET_SILN
+ frequency 30
+ip sla 104
+ icmp-echo 8.8.8.8 source-ip 190.105.183.85
+ vrf INET_SILN
+ frequency 30
+ip sla 105
+ icmp-echo 62.37.237.140 source-ip 190.105.176.117
+ vrf INET
+ frequency 30
+ip sla 106
+ icmp-echo 212.145.4.97 source-ip 190.105.176.117
+ vrf INET
+ frequency 30
+ip sla 107
+ icmp-echo 212.4.96.21 source-ip 190.105.176.117
+ vrf INET
+ frequency 30
+ip sla 108
+ icmp-echo 4.2.2.4 source-ip 190.105.176.117
+ vrf INET
+ frequency 30
+ip sla 109
+ icmp-echo 8.8.8.8 source-ip 190.105.176.117
+ vrf INET
+ frequency 30
+ip sla 110
+ icmp-echo 8.8.8.8 source-ip 190.105.178.98
+ vrf INET_GLO
+ frequency 30
+ip sla 111
+ icmp-echo 62.37.237.140 source-ip 190.105.178.98
+ vrf INET_GLO
+ frequency 30
+ip sla 112
+ icmp-echo 212.145.4.97 source-ip 190.105.178.98
+ vrf INET_GLO
+ frequency 30
+ip sla 113
+ icmp-echo 212.4.96.21 source-ip 190.105.178.98
+ vrf INET_GLO
+ frequency 30
+ip sla 114
+ icmp-echo 4.2.2.4 source-ip 190.105.178.98
+ vrf INET_GLO
+ frequency 30
+ip sla 115
+ icmp-echo 8.8.8.8 source-ip 181.114.223.13
+ vrf INET_TASA
+ frequency 30
+ip sla 116
+ icmp-echo 62.37.237.140 source-ip 181.114.223.13
+ vrf INET_TASA
+ frequency 30
+ip sla 117
+ icmp-echo 212.145.4.97 source-ip 181.114.223.13
+ vrf INET_TASA
+ frequency 30
+ip sla 118
+ icmp-echo 212.4.96.21 source-ip 181.114.223.13
+ vrf INET_TASA
+ frequency 30
+ip sla 119
+ icmp-echo 4.2.2.4 source-ip 181.114.223.13
+ vrf INET_TASA
+ frequency 30
+ip sla 120
+ icmp-echo 8.8.8.8 source-ip 181.114.221.41
+ vrf INET_CLARO
+ frequency 30
+ip sla 121
+ icmp-echo 62.37.237.140 source-ip 181.114.221.41
+ vrf INET_CLARO
+ frequency 30
+ip sla 122
+ icmp-echo 212.145.4.97 source-ip 181.114.221.41
+ vrf INET_CLARO
+ frequency 30
+ip sla 123
+ icmp-echo 212.4.96.21 source-ip 181.114.221.41
+ vrf INET_CLARO
+ frequency 30
+ip sla 124
+ icmp-echo 4.2.2.4 source-ip 181.114.221.41
+ vrf INET_CLARO
+ frequency 30
+ip sla group schedule 1 100-104 schedule-period 20 frequency 30 start-time now life forever
+ip sla group schedule 2 105-109 schedule-period 20 frequency 30 start-time now life forever
+ip sla group schedule 3 110-114 schedule-period 20 frequency 30 start-time now life forever
+ip sla group schedule 4 115-119 schedule-period 20 frequency 30 start-time now life forever
+ip sla group schedule 5 120-124 schedule-period 20 frequency 30 start-time now life forever
+logging history size 500
+logging origin-id hostname
+logging source-interface Loopback0
+logging 192.168.203.214
+access-list 2 permit 0.0.0.0
+!
+!
+!
+!
+route-map PERMIT_DEFAULT permit 10
+ match ip address 2
+!
+!
+snmp-server community Vostok3KA RO
+snmp-server ifindex persist
+snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+snmp-server enable traps vrrp
+snmp-server enable traps ds1
+snmp-server enable traps tty
+snmp-server enable traps eigrp
+snmp-server enable traps ethernet cfm cc mep-up mep-down cross-connect loop config
+snmp-server enable traps ethernet cfm crosscheck mep-missing mep-unknown service-up
+snmp-server enable traps flash insertion removal
+snmp-server enable traps ds3
+snmp-server enable traps envmon
+snmp-server enable traps isdn call-information
+snmp-server enable traps isdn layer2
+snmp-server enable traps isdn chan-not-avail
+snmp-server enable traps isdn ietf
+snmp-server enable traps aaa_server
+snmp-server enable traps atm subif
+snmp-server enable traps bgp
+snmp-server enable traps bulkstat collection transfer
+snmp-server enable traps cnpd
+snmp-server enable traps config-copy
+snmp-server enable traps config
+snmp-server enable traps config-ctid
+snmp-server enable traps entity
+snmp-server enable traps fru-ctrl
+snmp-server enable traps resource-policy
+snmp-server enable traps event-manager
+snmp-server enable traps frame-relay multilink bundle-mismatch
+snmp-server enable traps frame-relay
+snmp-server enable traps frame-relay subif
+snmp-server enable traps hsrp
+snmp-server enable traps ipmulticast
+snmp-server enable traps mpls ldp
+snmp-server enable traps mpls traffic-eng
+snmp-server enable traps mpls fast-reroute protected
+snmp-server enable traps msdp
+snmp-server enable traps mvpn
+snmp-server enable traps ospf state-change
+snmp-server enable traps ospf errors
+snmp-server enable traps ospf retransmit
+snmp-server enable traps ospf lsa
+snmp-server enable traps ospf cisco-specific state-change nssa-trans-change
+snmp-server enable traps ospf cisco-specific state-change shamlink interface-old
+snmp-server enable traps ospf cisco-specific state-change shamlink neighbor
+snmp-server enable traps ospf cisco-specific errors
+snmp-server enable traps ospf cisco-specific retransmit
+snmp-server enable traps ospf cisco-specific lsa
+snmp-server enable traps pim neighbor-change rp-mapping-change invalid-pim-message
+snmp-server enable traps pppoe
+snmp-server enable traps cpu threshold
+snmp-server enable traps rsvp
+snmp-server enable traps ipsla
+snmp-server enable traps syslog
+snmp-server enable traps l2tun session
+snmp-server enable traps l2tun pseudowire status
+snmp-server enable traps pw vc
+snmp-server enable traps ipmobile
+snmp-server enable traps rf
+snmp-server enable traps mpls vpn
+tacacs-server host 192.168.208.13
+tacacs-server host 192.168.206.86
+tacacs-server key Soyuz7KTM
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ transport preferred ssh
+line vty 5 15
+ transport preferred ssh
+!
+scheduler allocate 20000 1000
+ntp logging
+ntp update-calendar
+ntp server 192.168.208.11
+ntp server 192.168.208.13
+event manager session cli username "adc"
+event manager applet INET_DOWN_RIDSA_CASTEX 
+ event track 401 state down
+ action 1  syslog msg "Se cayo INET_PRIMARIA_RIDSA_CASTEX"
+ action 2  cli command "enable"
+ action 20 cli command "config t"
+ action 21 cli command "interface GigabitEthernet0/0.325"
+ action 22 cli command "no ip vrf forwarding INET"
+ action 23 cli command "ip vrf forwarding INET_GLO"
+ action 24 cli command "ip address 190.105.178.89 255.255.255.252"
+ action 25 cli command "exit"
+ action 26 cli command "do clear ip bgp * soft"
+event manager applet INET_UP_RIDSA_CASTEX 
+ event track 401 state up
+ action 1  syslog msg "Se levanto INET_PRIMARIA_RIDSA_CASTEX"
+ action 2  cli command "enable"
+ action 20 cli command "config t"
+ action 21 cli command "interface GigabitEthernet0/0.325"
+ action 22 cli command "no ip vrf forwarding INET_GLO"
+ action 23 cli command "ip vrf forwarding INET"
+ action 24 cli command "ip address 190.105.178.89 255.255.255.252"
+ action 25 cli command "exit"
+ action 26 cli command "do clear ip bgp * soft"
+event manager applet INET_DOWN_COOPCASTEX 
+ event track 401 state down
+ action 1  syslog msg "Se cayo INET_PRIMARIA_COOPECASTEX"
+ action 2  cli command "enable"
+ action 20 cli command "config t"
+ action 21 cli command "interface GigabitEthernet0/0.308"
+ action 22 cli command "no ip vrf forwarding INET"
+ action 23 cli command "ip vrf forwarding INET_GLO"
+ action 24 cli command "ip address 192.168.215.81 255.255.255.248"
+ action 25 cli command "ip address 192.168.217.193 255.255.255.252 secondary"
+ action 26 cli command "exit"
+ action 27 cli command "no ip route vrf INET 190.108.36.0 255.255.254.0 GigabitEthernet0/0.308 192.168.215.82"
+ action 28 cli command "ip route vrf INET_GLO 190.108.36.0 255.255.254.0 GigabitEthernet0/0.308 192.168.215.82"
+ action 29 cli command "do clear ip bgp * soft"
+event manager applet INET_UP_COOPECASTEX 
+ event track 401 state up
+ action 1  syslog msg "Se levanto INET_PRIMARIA_COOPECASTEX"
+ action 2  cli command "enable"
+ action 20 cli command "config t"
+ action 21 cli command "interface GigabitEthernet0/0.308"
+ action 22 cli command "no ip vrf forwarding INET_GLO"
+ action 23 cli command "ip vrf forwarding INET"
+ action 24 cli command "ip address 192.168.215.81 255.255.255.248"
+ action 25 cli command "ip address 192.168.217.193 255.255.255.252 secondary"
+ action 26 cli command "exit"
+ action 27 cli command "no ip route vrf INET_GLO 190.108.36.0 255.255.254.0 GigabitEthernet0/0.308 192.168.215.82"
+ action 28 cli command "ip route vrf INET 190.108.36.0 255.255.254.0 GigabitEthernet0/0.308 192.168.215.82"
+ action 29 cli command "do clear ip bgp * soft"
+event manager applet INET_DOWN_RIDSA_WINIFREDA 
+ event track 404 state down
+ action 1  syslog msg "Se cayo INET_PRIMARIA_RIDSA_WINIFREDA"
+ action 2  cli command "enable"
+ action 20 cli command "config t"
+ action 21 cli command "interface GigabitEthernet0/0.329"
+ action 22 cli command "no ip vrf forwarding INET_TASA"
+ action 23 cli command "ip vrf forwarding INET_SILN"
+ action 24 cli command "ip address 192.168.217.137 255.255.255.252"
+ action 25 cli command "exit"
+ action 26 cli command "do clear ip bgp * soft"
+event manager applet INET_UP_RIDSA_WINIFREDA 
+ event track 404 state up
+ action 1  syslog msg "Se levanto INET_PRIMARIA_RIDSA_WINIFREDA"
+ action 2  cli command "enable"
+ action 20 cli command "config t"
+ action 21 cli command "interface GigabitEthernet0/0.329"
+ action 22 cli command "no ip vrf forwarding INET_SILN"
+ action 23 cli command "ip vrf forwarding INET_TASA"
+ action 24 cli command "ip address 192.168.217.137 255.255.255.252"
+ action 25 cli command "exit"
+ action 26 cli command "do clear ip bgp * soft"
+event manager applet INET_DOWN_COOPWINI 
+ event track 403 state down
+ action 1  syslog msg "Se cayo INET_PRIMARIA_COOPWINI"
+ action 2  cli command "enable"
+ action 20 cli command "config t"
+ action 21 cli command "interface GigabitEthernet0/0.330"
+ action 22 cli command "no ip vrf forwarding INET_GLO"
+ action 23 cli command "ip vrf forwarding INET"
+ action 24 cli command " ip address 192.168.217.137 255.255.255.252"
+ action 25 cli command "exit"
+ action 26 cli command "no ip route vrf INET_GLO 190.105.190.0 255.255.255.0 GigabitEthernet0/0.330 192.168.217.148"
+ action 27 cli command "ip route vrf INET 190.105.190.0 255.255.255.0 GigabitEthernet0/0.330 192.168.217.148"
+ action 28 cli command "do clear ip bgp * soft"
+event manager applet INET_UP_COOPWINI 
+ event track 403 state up
+ action 1  syslog msg "Se levanto INET_PRIMARIA_COOPWINI"
+ action 2  cli command "enable"
+ action 20 cli command "config t"
+ action 21 cli command "interface GigabitEthernet0/0.330"
+ action 22 cli command "no ip vrf forwarding INET_GLO"
+ action 23 cli command "ip vrf forwarding INET"
+ action 24 cli command "ip address 192.168.217.137 255.255.255.252"
+ action 25 cli command "exit"
+ action 26 cli command "no ip route vrf INET 190.105.190.0 255.255.255.0 GigabitEthernet0/0.330 192.168.217.148"
+ action 27 cli command "ip route vrf INET_GLO 190.105.190.0 255.255.255.0 GigabitEthernet0/0.330 192.168.217.148"
+ action 28 cli command "do clear ip bgp * soft"
+!
+end
+
+NP_CAST_7201#
